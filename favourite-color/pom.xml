@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.github.matg0mes.kafka.pocs</groupId>
-    <artifactId>word-count</artifactId>
+    <artifactId>favourite-color</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -58,7 +58,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>com.github.matg0mes.kafka.pocs.WordCountApp</mainClass>
+                            <mainClass>com.github.matg0mes.kafka.pocs.FavouriteColorApp</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

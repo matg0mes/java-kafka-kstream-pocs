@@ -1,0 +1,6 @@
+ // Consumer to count words 
+
+kafka-console-consumer  --topic=user-and-colors  --bootstrap-server=localhost:9094  --from-beginning  --formatter kafka.tools.DefaultMessageFormatter  --property print.key=true  --property print.value=true  --property key.deserializer=org.apache.kafka.common.serialization.StringDeserializer  --property value.deserializer=org.apache.kafka.common.serialization.StringDeserializer
+
+
+kafka-console-consumer  --topic=favourite-color-output  --bootstrap-server=localhost:9094  --from-beginning  --formatter kafka.tools.DefaultMessageFormatter  --property print.key=true  --property print.value=true  --property key.deserializer=org.apache.kafka.common.serialization.StringDeserializer  --property value.deserializer=org.apache.kafka.common.serialization.LongDeserializer
