@@ -30,7 +30,6 @@ public class FavouriteColorApp {
         //Streams from kafka
 
         List<String> whiteList = Arrays.asList("red", "blue", "green");
-        List<String> logExample = new ArrayList<>();
 
         KStream<String, String> textLines = builder.stream("favourite-color-input");
 
