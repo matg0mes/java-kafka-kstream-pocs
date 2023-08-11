@@ -9,18 +9,22 @@ import org.example.enums.RequestTypeEnums;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class RequestDTO {
+public class RequestIteratorDTO {
 
-    private RequestTypeEnums topicEnums;
-    private String description;
+    List<RequestDTO> requests;
 
-    public static Boolean existsAllTypes(List<RequestDTO> dto) {
-        return new HashSet<>(Arrays.asList(RequestTypeEnums.values())).containsAll(dto.stream().map(RequestDTO::getTopicEnums)
-                .collect(Collectors.toList()));
+    public RequestIteratorDTO() {
+        this.requests = new ArrayList<>();
     }
 
+    public static Boolean existsAllTypes(RequestIteratorDTO dto) {
+        return new HashSet<>(dto.getRequests().stream()
+                .filter(Objects::nonNull)
+                .map(RequestDTO::getTopicEnums)
+                .collect(Collectors.toList())).containsAll(Arrays.asList(RequestTypeEnums.values()));
+    }
 
-    public static class RequestDTOSerializer implements Serializer<RequestDTO> {
+    public static class RequestDTOSerializer implements Serializer<RequestIteratorDTO> {
 
         private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -30,7 +34,7 @@ public class RequestDTO {
         }
 
         @Override
-        public byte[] serialize(String topic, RequestDTO data) {
+        public byte[] serialize(String topic, RequestIteratorDTO data) {
 
             if (Objects.isNull(data)) {
                 return null;
@@ -49,7 +53,7 @@ public class RequestDTO {
         }
     }
 
-    public static class RequestDTODeserializer implements Deserializer<RequestDTO> {
+    public static class RequestDTODeserializer implements Deserializer<RequestIteratorDTO> {
 
         private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -59,15 +63,15 @@ public class RequestDTO {
         }
 
         @Override
-        public RequestDTO deserialize(String topic, byte[] bytes) {
+        public RequestIteratorDTO deserialize(String topic, byte[] bytes) {
             if (Objects.isNull(bytes)) {
                 return null;
             }
 
-            RequestDTO data = null;
+            RequestIteratorDTO data = null;
             try {
                 data = objectMapper.treeToValue(objectMapper.readTree(bytes),
-                        RequestDTO.class);
+                        RequestIteratorDTO.class);
             } catch (Exception e) {
                 System.out.println(e);
             }
@@ -81,21 +85,11 @@ public class RequestDTO {
         }
     }
 
-
-
-    public RequestTypeEnums getTopicEnums() {
-        return topicEnums;
+    public List<RequestDTO> getRequests() {
+        return requests;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setTopicEnums(RequestTypeEnums topicEnums) {
-        this.topicEnums = topicEnums;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
+    public void setRequests(List<RequestDTO> requests) {
+        this.requests = requests;
     }
 }

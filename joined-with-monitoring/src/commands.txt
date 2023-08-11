@@ -1,0 +1,25 @@
+kafka-topics --create --zookeeper zookeeper:2181 --topic topic-monitoring-joined --replication-factor 1 --partitions 1 --config "cleanup.policy=compact" --config "delete.retention.ms=100" --config "segment.ms=100" --config "min.cleanable.dirty.ratio=0.01"
+
+kafka-console-producer --bootstrap-server localhost:9094 --topic topic-fragment-1 --property "parse.key=true" --property "key.separator=:"
+kafka-console-producer --bootstrap-server localhost:9094 --topic topic-fragment-2 --property "parse.key=true" --property "key.separator=:"
+kafka-console-producer --bootstrap-server localhost:9094 --topic topic-fragment-3 --property "parse.key=true" --property "key.separator=:"
+
+GATO:{"topicEnums": "TOPIC_1", "description":"GATO 1"}
+GATO:{"topicEnums": "TOPIC_2", "description":"GATO 2"}
+GATO:{"topicEnums": "TOPIC_3", "description":"GATO 3"}
+
+XEROSO:{"topicEnums": "TOPIC_1", "description":"XEROSO 1"}
+XEROSO:{"topicEnums": "TOPIC_2", "description":"XEROSO 2"}
+
+baunilha:{"topicEnums": "TOPIC_1", "description":"baunilha 1"}
+baunilha:{"topicEnums": "TOPIC_2", "description":"baunilha 2"}
+baunilha:{"topicEnums": "TOPIC_3", "description":"baunilha 3"}
+
+margarina:{"topicEnums": "TOPIC_1", "description":"margarina 1"}
+
+xucrvenenoso:{"topicEnums": "TOPIC_1", "description":"xucrutevenenoso 1"}
+
+drogb:{"topicEnums": "TOPIC_1", "description":"drogba 1"}
+
+geladeira:{"topicEnums": "TOPIC_1", "description":"geladeira 1"}
+geladeira:{"topicEnums": "TOPIC_2", "description":"geladeira 1"}
