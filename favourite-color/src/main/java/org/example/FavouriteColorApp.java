@@ -10,7 +10,6 @@ import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.KTable;
 import org.apache.kafka.streams.kstream.Named;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
@@ -48,12 +47,11 @@ public class FavouriteColorApp {
         // Guardo o estado das operações em um topico
         userAndColours.to("user-and-colors");
 
+
         // Transformo o topico em KTable para realizar as operações de update, delete e create no topico
         KTable<String, String> usersAndColorsTable = builder.table("user-and-colors");
 
-
         KTable<String, Long> favouriteColors = usersAndColorsTable
-
                 // Agrupo por cor
                 .groupBy((user, color) -> new KeyValue<>(color, color))
                 // Realizo a contagem da quantidade de cores
