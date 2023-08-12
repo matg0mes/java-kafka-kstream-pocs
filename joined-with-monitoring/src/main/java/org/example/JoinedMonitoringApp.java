@@ -19,7 +19,7 @@ public class JoinedMonitoringApp {
     public static void main(String[] args) {
         Properties config = new Properties();
 
-        config.put(StreamsConfig.APPLICATION_ID_CONFIG, "kstream-app");
+        config.put(StreamsConfig.APPLICATION_ID_CONFIG, "kstreamadada-dadmamasa");
         config.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9094");
         config.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
         config.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
@@ -36,26 +36,21 @@ public class JoinedMonitoringApp {
 
         Consumed<String, RequestDTO> consumed = Consumed.with(Serdes.String(), requestDTOJsonSerde);
 
-        KStream<String, RequestDTO> topic1 = builder.stream("topic-fragment-1", consumed);
-        KStream<String, RequestDTO> topic2 = builder.stream("topic-fragment-2", consumed);
-        KStream<String, RequestDTO> topic3 = builder.stream("topic-fragment-3", consumed);
+        // KTable cause maintain consistence and not lose performance using stre
+        KTable<String, RequestDTO> topic1 = builder.table("topic-fragment-1", consumed);
+        KTable<String, RequestDTO> topic2 = builder.table("topic-fragment-2", consumed);
+        KTable<String, RequestDTO> topic3 = builder.table("topic-fragment-3", consumed);
 
-
-        KStream<String, RequestIteratorDTO> joined = topic1.outerJoin(topic2,
-                new RequestJoinerService.RequestJoinerObject(),
-                JoinWindows.ofTimeDifferenceWithNoGrace(Duration.ofSeconds(30)),
-                StreamJoined.with(Serdes.String(), requestDTOJsonSerde, requestDTOJsonSerde)
+        KTable<String, RequestIteratorDTO> joined = topic1.outerJoin(topic2,
+                new RequestJoinerService.RequestJoinerObject()
         ).outerJoin(topic3,
-                new RequestJoinerService.RequestJoinerIncrement(),
-                JoinWindows.ofTimeDifferenceWithNoGrace(Duration.ofSeconds(30)),
-                StreamJoined.with(Serdes.String(), requestDTOIteratorJsonSerde, requestDTOJsonSerde)
+                new RequestJoinerService.RequestJoinerIncrement()
         );
 
-        joined.filter((ignoredKey, value) -> RequestIteratorDTO.existsAllTypes(value))
-                .to("topic-joi", Produced.with(Serdes.String(), requestDTOIteratorJsonSerde));
+        joined.toStream().to("topic-joined.source", Produced.with(Serdes.String(), requestDTOIteratorJsonSerde));
 
-        joined.filterNot((ignoredKey, value) -> RequestIteratorDTO.existsAllTypes(value))
-                .to("topic-joined.source", Produced.with(Serdes.String(), requestDTOIteratorJsonSerde));
+        joined.filter((ignoredKey, value) -> RequestIteratorDTO.existsAllTypes(value))
+                .toStream().to("topic-joi", Produced.with(Serdes.String(), requestDTOIteratorJsonSerde));
 
         KafkaStreams streams = new KafkaStreams(builder.build(), config);
         streams.start();

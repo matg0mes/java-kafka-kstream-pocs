@@ -24,3 +24,12 @@ drogb:{"topicEnums": "TOPIC_3", "description":"drogba 3"}
 
 geladeira:{"topicEnums": "TOPIC_1", "description":"geladeira 1"}
 geladeira:{"topicEnums": "TOPIC_2", "description":"geladeira 1"}
+
+PRIZINHA:{"topicEnums": "TOPIC_1", "description":"PRIZINHA 1"}
+PRIZINHA:{"topicEnums": "TOPIC_2", "description":"PRIZINHA 2"}
+PRIZINHA:{"topicEnums": "TOPIC_3", "description":"PRIZINHA 3"}
+
+
+PRIZINHA:{"topicEnums": "TOPIC_1", "description":"PRIZINHA 1"}
+PRIZINHA:{"topicEnums": "TOPIC_2", "description":"PRIZINHA 2"}
+PRIZINHA:{"topicEnums": "TOPIC_3", "description":"PRIZINHA 3"}
